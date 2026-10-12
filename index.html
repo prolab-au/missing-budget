@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>The Missing Budget</title>
+
+        <style>
+            :root {
+                --desk: #2b3138;
+                --paper: #ecebe6;
+                --ink: #1d2024;
+                --muted: #5b6168;
+                --tape: #c8442b;
+                --note: #f3e7a8;
+            }
+            * { box-sizing: border-box; }
+            html { height: 100%; }
+            body {
+                margin: 0; min-height: 100%;
+                background: var(--desk); color: var(--ink);
+                font-family: Georgia, "Times New Roman", serif;
+                line-height: 1.7;
+                padding: 2rem 1rem 3rem;
+            }
+            .sheet {
+                max-width: 38rem; margin: 0 auto;
+                background: var(--paper);
+                padding: 2.5rem 2rem 2.25rem;
+                border-top: 10px solid var(--tape);
+                box-shadow: 0 18px 40px rgba(0,0,0,.45);
+            }
+            .lang { display: flex; justify-content: flex-end; gap: .25rem; margin-bottom: 1.5rem; }
+            .lang button {
+                font: inherit; font-size: .9rem; cursor: pointer;
+                background: none; color: var(--muted);
+                border: 1px solid transparent; padding: .15rem .6rem;
+            }
+            .lang button[aria-pressed="true"] { color: var(--ink); border-color: var(--ink); }
+            .lang button:focus-visible, a:focus-visible { outline: 3px solid var(--tape); outline-offset: 2px; }
+            h1 { font-size: 2.1rem; line-height: 1.15; margin: 0 0 1.5rem; letter-spacing: -.01em; }
+            p { margin: 0 0 1.1rem; }
+            .note {
+                background: var(--note); transform: rotate(-1.2deg);
+                margin: 1.8rem 0 2rem; padding: 1.1rem 1.3rem;
+                font-family: "Courier New", monospace; font-size: 1.05rem; line-height: 1.5;
+                box-shadow: 0 3px 8px rgba(0,0,0,.2);
+            }
+            .note small { display: block; margin-top: .5rem; color: var(--muted); font-size: .8rem; }
+            .file {
+                display: inline-block; color: var(--ink); text-decoration: none;
+                border: 2px solid var(--ink); padding: .6rem 1.1rem;
+                font-family: "Courier New", monospace; font-size: 1rem;
+            }
+            .file:hover { background: var(--ink); color: var(--paper); }
+            [data-l] { display: none; }
+            html[lang="en"] [data-l="en"], html[lang="tr"] [data-l="tr"] { display: revert; }
+            @media (max-width: 480px) { .sheet { padding: 1.75rem 1.25rem; } h1 { font-size: 1.7rem; } }
+            @media (prefers-reduced-motion: no-preference) { .note { transition: transform .2s; } .note:hover { transform: rotate(0); } }
+        </style>
+
+    </head>
+
+    <body>
+
+        <main class="sheet">
+
+            <div class="lang" role="group" aria-label="Language">
+                <button type="button" data-set="en" aria-pressed="true">English</button>
+                <button type="button" data-set="tr" aria-pressed="false">Türkçe</button>
+            </div>
+
+            <h1 data-l="en">The Missing Budget</h1>
+            <h1 data-l="tr">Kayıp Bütçe</h1>
+
+            <p data-l="en">The only signed copy of the computer labs' budget has vanished from Prof. Y.A.'s office. Without that signature, nothing gets funded.</p>
+            <p data-l="tr">Bilgisayar laboratuvarlarının bütçesine ait tek imzalı evrak, Prof. Y.A.'nın odasından kayboldu. O imza olmadan ödenek çıkmayacak.</p>
+
+            <p data-l="en">Whoever took it left one photo behind, with a note attached. You are the Digital Forensics Unit. Find the thief before the budget is spent.</p>
+            <p data-l="tr">Kim aldıysa geride tek bir fotoğraf ve ona iliştirilmiş bir not bıraktı. Siz Dijital Adli Bilişim Birimi'siniz. Bütçe harcanmadan hırsızı bulun.</p>
+
+            <div class="note">
+                <span data-l="en">"I don't have time. The photo speaks for itself."</span>
+                <span data-l="tr">"Vaktim yok. Fotoğraf her şeyi anlatıyor."</span>
+            </div>
+
+            <a class="file" href="upload.jpg" download>upload.jpg</a>
+
+        </main>
+
+        <script>
+            var btns = document.querySelectorAll('.lang button');
+            function setLang(l) {
+                document.documentElement.lang = l;
+                document.title = l === 'tr' ? 'Kayıp Bütçe' : 'The Missing Budget';
+                btns.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.set === l); });
+                try { localStorage.setItem('lang', l); } catch (e) {}
+            }
+            btns.forEach(function (b) { b.addEventListener('click', function () { setLang(b.dataset.set); }); });
+            try { var s = localStorage.getItem('lang'); if (s === 'tr') setLang('tr'); } catch (e) {}
+        </script>
+
+    </body>
+
+</html>
